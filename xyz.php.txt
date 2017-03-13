@@ -1,0 +1,40 @@
+<?php
+// Get a connection for the database
+require_once('C:\wamp64\www\mysqli_connect.php');
+// Create a query for the database
+$query = "SELECT UserName,AadharCard_no,ID_no,Phone_no,balance,Cycle_no,Cyclestatus FROM zest ORDER BY AadharCard_no";
+// Get a response from the database by sending the connection
+// and the query
+$response = @mysqli_query($dbc, $query);
+// If the query executed properly proceed
+if($response){
+echo '<table align="left"
+cellspacing="5" cellpadding="8">
+<tr><td align="left"><b>UserName</b></td>
+<td align="left"><b>AadharCard_no</b></td>
+<td align="left"><b>ID_no</b></td>
+<td align="left"><b>Phone_no</b></td>
+<td align="left"><b>balance</b></td>
+<td align="left"><b>Cycle_no</b></td>
+<td align="left"><b>Cyclestatus</b></td></tr>';
+// mysqli_fetch_array will return a row of data from the query
+// until no further data is available
+while($row = mysqli_fetch_array($response)){
+echo '<tr><td align="left">' .
+$row['UserName'] . '</td><td align="left">' .
+$row['AadharCard_no'] . '</td><td align="left">' .
+$row['ID_no'] . '</td><td align="left">' .
+$row['Phone_no'] . '</td><td align="left">' .
+$row['balance'] . '</td><td align="left">' .
+$row['Cycle_no'] . '</td><td align="left">' .
+$row['Cyclestatus'] . '</td><td align="left">' ;
+echo '</tr>';
+}
+echo '</table>';
+} else {
+echo "Couldn't issue database query<br />";
+echo mysqli_error($dbc);
+}
+// Close connection to the database
+mysqli_close($dbc);
+?>
