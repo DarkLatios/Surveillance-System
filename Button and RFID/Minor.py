@@ -5,7 +5,8 @@ import time
 import os
 from qrtools import QR
 
-
+GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
 
 class Scrapper:
 
@@ -33,7 +34,7 @@ class Scrapper:
         
     def image(self):
         GPIO.setup(8,GPIO.IN)
-        GPIO.setup(7,GPIO.IN)
+        #GPIO.setup(7,GPIO.IN)
         pre=0
         while True:
             input=GPIO.input(8)
@@ -41,17 +42,19 @@ class Scrapper:
                 print 'Button 1 is Pressed'
                 os.system("fswebcam image.png")
                 pre=input
+		break
                 time.sleep(0.05)
         
     def Authentication(self,l):
         
         count =0
-        myCode=QR(filename=u"/home/pi/image.png")
-        n=myCode.decode()
-        print n 
+        myCode=QR(filename=u"/home/pi/Desktop/image.png")
+        myCode.decode()
+	n=myCode.data_to_string() 
         for a in l:
-            for x in a:
-                if (x==n):
+            for y in a:
+		x=y.encode("utf-8")
+                if x == n[3:]:
                     count+=1
         return count
 
@@ -80,14 +83,16 @@ class Scrapper:
 
 
 
-
-wiz=Scrapper()
-res=wiz.Connection()
-l=wiz.Processing(res)
-print "Place The QR Code...."
-wiz.image()
-val=wiz.Authentication(l)
-wiz.Visual(val)
+a=5
+while(a!=0):
+	
+	wiz=Scrapper()
+	res=wiz.Connection()
+	l=wiz.Processing(res)
+	print "Place The QR Code...."
+	wiz.image()
+	val=wiz.Authentication(l)
+	wiz.Visual(val)
 
 #app=[lis_ans.append(x.values()) for x in res[i] for i in res]
 
